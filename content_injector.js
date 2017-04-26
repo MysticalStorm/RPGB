@@ -12,21 +12,6 @@
  */
 
 var s = document.createElement ("script");
-s.src = chrome.extension.getURL ("injection1.js");
-s.async = false;
-document.documentElement.appendChild (s);
-
-var s = document.createElement ("script");
-s.src = chrome.extension.getURL ("injection2.js");
-s.async = false;
-document.documentElement.appendChild (s);
-
-var s = document.createElement ("script");
-s.src = chrome.extension.getURL ("injection3.js");
-s.async = false;
-document.documentElement.appendChild (s);
-
-var s = document.createElement ("script");
-s.src = chrome.extension.getURL ("injection4.js");
+s.src = chrome.extension.getURL ("injection.js");
 s.async = false;
 document.documentElement.appendChild (s);
