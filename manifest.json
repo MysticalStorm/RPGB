@@ -1,0 +1,31 @@
+{
+  "name": "RPGImprove",
+  "version": "1.0",
+  "description": "Extension for improve game process",
+  "permissions": ["webRequest", "webRequestBlocking",
+                  "*://*.mo.ee/*"],
+  "background": {
+    "scripts": ["network_injector.js"]
+  },
+  "content_scripts": [
+  {
+    "matches": [
+      "http://rpg.mo.ee/*",
+      "https://data.mo.ee/*"
+    ],
+    "css": [],
+    "js": ["content_injector.js"],
+    "run_at":"document_start"
+  }
+  ],
+  "web_accessible_resources": [
+    "*.js"
+  ],
+  "browser_action": {
+    "default_title": "RPGImprove",
+    "default_icon": "icon.png",
+    "default_popup": "popup.html"
+  },
+
+  "manifest_version": 2
+}
