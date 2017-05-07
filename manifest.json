@@ -14,7 +14,7 @@
       "https://data.mo.ee/*"
     ],
     "css": [],
-    "js": ["content_injector.js"],
+    "js": ["content_injector.js", "pathfinding-browser.min.js"],
     "run_at":"document_start"
   }
   ],

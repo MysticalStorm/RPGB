@@ -1,0 +1,59 @@
+Methods:
+
+on_map[players[0].map][41][63].b_t == BASE_TYPE.PLAYER
+
+Socket.send("set_target", {target: 8312})
+
+findPathFromTo(players[0], {i: 41, j:61}, players[0])
+
+node_graphs[players[0].map].nodes[37][61].type
+
+astar.search(node_graphs[players[0].map].nodes, node_graphs[players[0].map].nodes[41][61], node_graphs[players[0].map].nodes[41][63])
+
+Atack -
+obj_g( on_map[players[0].map][41][63] ).fn(obj_g( on_map[players[0].map][41][63] ).activities[0].toLowerCase(),obj_g( on_map[players[0].map][41][63] ), players[0])
+
+                    Socket.send("move", {
+                        i: players[0].temp.to.i,
+                        j: players[0].temp.to.j,
+                        t: timestamp()
+                    })
+53 59 (52 59)
+{px: 53, py: 59, ax: 52, ay: 59},
+50 60 (50 61)
+{px: 50, py: 60, ax: 50, ay: 61},
+51 57 (51 56)
+{px: 51, py: 57, ax: 51, ay: 56},
+49 55 (48 55)
+{px: 49, py: 55, ax: 48, ay: 55},
+45 65 (45 57)
+{px: 45, py: 65, ax: 45, ay: 57},
+45 60 (45 61)
+{px: 45, py: 60, ax: 45, ay: 61},
+46 60 (47 60)
+{px: 46, py: 60, ax: 47, ay: 60},
+45 64 (44 64)
+{px: 45, py: 64, ax: 44, ay: 64},
+42 63 (41 63)
+{px: 42, py: 63, ax: 41, ay: 63},
+42 61 (43 61)
+{px: 42, py: 61, ax: 43, ay: 61},
+43 64 (44 64)
+{px: 43, py: 64, ax: 44, ay: 64},
+45 62 (45 61)
+{px: 45, py: 62, ax: 45, ay: 61},
+46 60 (47 60)
+{px: 46, py: 60, ax: 47, ay: 60},
+45 58 (45 57)
+{px: 45, py: 58, ax: 45, ay: 57},
+48 56 (48 55)
+{px: 48, py: 56, ax: 48, ay: 55},
+51 55 (51 56)
+{px: 51, py: 55, ax: 51, ay: 56},
+50 60 (50 61)
+{px: 50, py: 60, ax: 50, ay: 61},
+51 59 (52 59)
+{px: 51, py: 59, ax: 52, ay: 59},
+
+scan > enemis
+enemis > sort > near enemis
