@@ -13,17 +13,17 @@
 
 
 var s = document.createElement ("script");
-s.src = chrome.extension.getURL ("injection.js");
+s.src = chrome.extension.getURL ("bot/injection.js");
 s.async = false;
 document.documentElement.appendChild (s);
 
 var s = document.createElement ("script");
-s.src = chrome.extension.getURL ("injection_bot.js");
+s.src = chrome.extension.getURL ("bot/injection_bot.js");
 s.async = false;
 document.documentElement.appendChild (s);
 
 var s = document.createElement ("script");
-s.src = chrome.extension.getURL ("pathfinding-browser.min.js");
+s.src = chrome.extension.getURL ("auxiliary/pathfinding-browser.min.js");
 s.async = false;
 document.documentElement.appendChild (s);
 
@@ -42,6 +42,5 @@ chrome.runtime.onMessage.addListener(
 
 document.addEventListener('yourCustomEvent', function (e) {
   	var data=e.detail;
-  	
   	chrome.runtime.sendMessage(data);
 });

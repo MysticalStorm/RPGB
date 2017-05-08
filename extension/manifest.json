@@ -1,6 +1,6 @@
 {
-  "name": "RPGImprove",
-  "version": "1.0",
+  "name": "RPGB",
+  "version": "2.0",
   "description": "Extension for improve game process",
   "permissions": ["webRequest", "webRequestBlocking",
                   "*://*.mo.ee/*"],
@@ -14,15 +14,15 @@
       "https://data.mo.ee/*"
     ],
     "css": [],
-    "js": ["content_injector.js", "pathfinding-browser.min.js"],
+    "js": ["content_injector.js", "auxiliary/pathfinding-browser.min.js"],
     "run_at":"document_start"
   }
   ],
   "web_accessible_resources": [
-    "*.js"
+    "*.js", "*.css"
   ],
   "browser_action": {
-    "default_title": "RPGImprove",
+    "default_title": "RPGB",
     "default_icon": "icon.png",
     "default_popup": "popup.html"
   },

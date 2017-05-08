@@ -1,7 +1,11 @@
-	var mapData = {path: []};
-	var refreshId = false;
+	var mapData = {path: [], active: false};
 
     function refresh() {
+    	if (mapData.active)
+    		$("#activateButton").css("background-color", "green");
+    	else
+    		$("#activateButton").css("background-color", "red");
+
 		chrome.tabs.query({active: true, currentWindow: true}, function(tabs) {
   			chrome.tabs.sendMessage(tabs[0].id, {id: "draw"}, function(response) {
   			});
@@ -35,10 +39,12 @@
 			//{map: data, player: {i: players[0].i, j: players[0].j}, path: path, enemies: enemies, players: players_coords}
 			mapData["map"] = request.map;
 			mapData["player"] = request.player;
+            mapData["area"] = request.area;
 			if (request.path !== undefined) mapData["path"] = request.path;
 			mapData["enemies"] = request.enemies;
 			mapData["players"] = request.players;
-			
+			mapData["active"] = request.active;
+
 			drawBotMap();
 		});
 	}
@@ -49,9 +55,28 @@
     	var canvas = document.getElementById("myCanvas");
 		var ctx = canvas.getContext("2d");
 
+        ctx.fillStyle = "#ffffff";
+        ctx.fillRect(0, 0, data.map.length*2, data.map[0].length*2);
+
+		if (data.area != undefined) {
+			var area = {
+				lx: data.area.lx < data.area.rx ? data.area.lx : data.area.rx,
+				rx: data.area.lx < data.area.rx ? data.area.rx : data.area.lx,
+                ly: data.area.ly < data.area.ry ? data.area.ly : data.area.ry,
+                ry: data.area.ly < data.area.ry ? data.area.ry : data.area.ly
+			}
+            for (var i = area.lx; i <= area.rx; i++) {
+                for (var j = area.ly; j <= area.ry; j++) {
+                    ctx.fillStyle = "#a59bff";
+                    ctx.fillRect(i * 2, j * 2, 2, 2);
+                }
+            }
+        }
+
 		for (var i = data.map.length - 1; i >= 0; i--) {
 			for (var j = 0; j <= data.map[i].length - 1; j++) {
-				ctx.fillStyle = (data.map[i][j].type ? "#FFFFFF" : "#000000");
+				ctx.fillStyle = "#000000";
+                if (!data.map[i][j].type)
 				ctx.fillRect(i*2,j*2,2,2);
 			}
 		}
@@ -70,9 +95,9 @@
 
 		var players = data.players;
 		for (var i = 0; i <= players.length - 1; i++) {
-			ctx.fillStyle = "#0000FF";
+			ctx.fillStyle = "#2500ff";
 			ctx.fillRect(players[i].x*2, players[i].y*2, 4, 4);
-			ctx.fillStyle = "#FFFFFF";
+			ctx.fillStyle = "#3fff00";
 			ctx.fillRect((players[i].x*2)+1, (players[i].y*2)+1, 2, 2);
 		}		
 
@@ -81,26 +106,14 @@
     }
 
 	document.addEventListener('DOMContentLoaded', function() {
-	    $("#refreshButton").click(function () {
-	    	if (!refreshId) {
-	    		refreshId = setInterval(refresh, 1000);
-	    	} else {
-	    		clearInterval(refreshId);
-	    		refreshId = false;
-	    	}
-	    });
-
 	   	$("#activateButton").click(function () {
 	    	bot();
-	    });
-
-	    $("#stopButton").click(function () {
-	    	stop();
 	    });
 
 	    $("#homeButton").click(function () {
 	    	home();
 	    });
 
+        setInterval(refresh, 1000);
 	    communication();
 	});

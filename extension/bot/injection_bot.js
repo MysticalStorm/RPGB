@@ -1,4 +1,6 @@
     var isBotActive = false;
+	var currentFarmArea;
+	var movementSpeed = 225;
 
     function pathTo(x, y) {
 		var finder = new PF.BestFirstFinder({
@@ -72,16 +74,16 @@
     function atackPosition(x, y) {
     	var paths = [];
 
-    	if (!obj_g(on_map[0][x - 1][y])) {
+    	if (!obj_g(on_map[players[0].map][x - 1][y])) {
     		paths.push(pathTo(x - 1, y));
     	}
-    	if (!obj_g(on_map[0][x + 1][y])) {
+    	if (!obj_g(on_map[players[0].map][x + 1][y])) {
     		paths.push(pathTo(x + 1, y));	
     	}
-    	if (!obj_g(on_map[0][x][y - 1])) {
+    	if (!obj_g(on_map[players[0].map][x][y - 1])) {
     		paths.push(pathTo(x, y - 1));
     	}
-    	if (!obj_g(on_map[0][x][y + y])) {
+    	if (!obj_g(on_map[players[0].map][x][y + y])) {
     		paths.push(pathTo(x, y + 1));
     	}
     	paths = paths.filter(function (element) {
@@ -93,70 +95,112 @@
     	return sorted.length === 0 ? [] : sorted.shift();
     }
 
+    function getPlayersCoords() {
+        var players_coords = Object.values( players ).map(function(elem, index) {
+            return {x: elem.i, y: elem.j, name: elem.name};
+        });
+        var players_coords = players_coords.filter(function (elem) {
+            return !(/pet/.test(elem.name))
+        })
+		return players_coords;
+    }
+
+	function playersInArea(area) {
+		var players_coords = getPlayersCoords();
+		var _players = [];
+
+        area = {
+            lx: area.lx < area.rx ? area.lx : area.rx,
+            rx: area.lx < area.rx ? area.rx : area.lx,
+            ly: area.ly < area.ry ? area.ly : area.ry,
+            ry: area.ly < area.ry ? area.ry : area.ly
+        }
+		players_coords.forEach(function (player, i, array) {
+			if ( (player.x >= area.lx && player.x <= area.rx) &&
+				(player.y >= area.ly && player.y <= area.ry) ) {
+				_players.push(player);
+			}
+		});
+		return _players;
+    }
+
     function activateBot() {
+    	if (isBotActive) {
+    		isBotActive = false;
+    		return;
+		}
     	isBotActive = true;
-    	
-    	farmCastle();
+
+        var castleArea = {lx: 40, ly: 54, rx: 52, ry: 65, exept: [{x: 43, y: 58}, {x: 50, y: 63}]};
+        currentFarmArea = castleArea;
+
+    	farmArea(currentFarmArea);
     }
 
     function stopBot() {
     	isBotActive = false;
+    	currentFarmArea = undefined;
     }
 
     function toHome() {
     	var path=pathTo(20, 20);
+    	movementSpeed = 225;
     	_moveInPath(path, function (s) {})
     }
 
-    function farmCastle() {
-    	var mobs = scanArea(40, 54 ,52, 65, [{x: 43, y: 58}, {x: 50, y: 63}]);
-    	var positionsToAtacks = ableToAtackEnemiesPaths(mobs);
-    	farmMobs(positionsToAtacks);
+    function farmArea(area) {
+    	if (area === undefined) return;
+
+    	var mobs = scanArea(area.lx, area.ly , area.rx, area.ry, area.exept);
+    	var positionsToAtack = ableToAtackEnemiesPaths(mobs);
+    	farmMobs(positionsToAtack);
     }
 
     
-    function farmMobs(atack) {
-    	if (atack.length == 0) {
-    		console.log("Farm is empty")
-    		setTimeout(farmCastle, 1000);
+    function farmMobs(positionsToAtack) {
+    	if (positionsToAtack.length == 0) {
+    		console.log("Farm is empty");
+    		setTimeout(farmArea, 1000, currentFarmArea);
     		return
     	}
-    	if (!isBotActive) return
+    	if (!isBotActive) return;
 
-    	var a = atack.shift();
-    	if (a.path.length > 0) {
-    		nodes(a.path);
-    		_moveInPath(a.path, function (finished) {
-    			var p = a.path[0];
+    	var atackPosition = positionsToAtack.shift();
+    	if (atackPosition.path.length > 0) {
+    		nodes(atackPosition.path);
+
+    		var p = atackPosition.path[0];
+    		movementSpeed = playersInArea(currentFarmArea).length > 1 ? 500 : 225;
+    		_moveInPath(atackPosition.path, function (finished) {
     			if (p != undefined)
     			console.log("move to (" + p.x + " " + p.y + ") - " + finished);
 
     			if (finished) {
-    				if (!on_map[0][a.enemy.x][a.enemy.y]) {
-						farmCastle();
+    				if (!on_map[players[0].map][atackPosition.enemy.x][atackPosition.enemy.y]) {
+						farmArea(currentFarmArea);
 						return
 					}
 
-					atackMob(a.enemy.x, a.enemy.y, function (success) {
-						console.log("atack (" + a.enemy.x + " " + a.enemy.y + ") - " + success);
-						farmCastle();
+					atackMob(atackPosition.enemy.x, atackPosition.enemy.y, function (success) {
+						console.log("atack (" + atackPosition.enemy.x + " " + atackPosition.enemy.y + ") - " + success);
+                        farmArea(currentFarmArea);
 					});
     			}
     		})
     	} else {
-    		farmMobs(positions);
+    		farmMobs(positionsToAtack);
     	}
     }
 
     function atackMob(x, y, callback) {
     	Socket.send("set_target", {
-				target: obj_g(on_map[0][x][y]).id
+				target: obj_g(on_map[players[0].map][x][y]).id
 		});
 		isMobDead(x, y, callback);
     }
 
     function isMobDead(x, y, callback) {
-    	if (!on_map[0][x][y]) {
+    	if (!(on_map[players[0].map][x][y].b_t == BASE_TYPE.NPC)) {
     		callback(true);
     		return
     	}
@@ -166,16 +210,17 @@
     function nodes(path) {
     	var data=node_graphs[players[0].map].nodes;
     	var enemies = scanArea(0, 0, 100, 100);
-    	var players_coords = Object.values( players ).map(function(elem, index) {
-    		return {x: elem.i, y: elem.j, name: elem.name};
-    	});
-    	var players_coords = players_coords.filter(function (elem) {
-    		return !(/pet/.test(elem.name))
-    	})
+        var players_coords = getPlayersCoords();
 
 		var evt=document.createEvent("CustomEvent");
 		evt.initCustomEvent("yourCustomEvent", true, true, 
-			{map: data, player: {i: players[0].i, j: players[0].j}, path: path, enemies: enemies, players: players_coords});
+				{map: data,
+				player: {i: players[0].i, j: players[0].j},
+				path: path,
+				enemies: enemies,
+				players: players_coords,
+				area: currentFarmArea,
+				active: isBotActive});
 		document.dispatchEvent(evt);
     }
 
@@ -215,5 +260,5 @@
        	finishedMovement();
        	drawMap();
        	updateBase();
-       	setTimeout(_moveInPath, 500, path, callback);
+       	setTimeout(_moveInPath, movementSpeed ,path, callback);
     } 

@@ -1,0 +1,103 @@
+body {
+    background-color: darkslategrey;
+    width: 230px;
+}
+
+#myCanvas {
+    border: 1px solid #000000;
+    display: block;
+    margin: 0 auto;
+}
+
+#setButton {
+    background-color: #4CAF50;
+    border: none;
+    color: white;
+    padding: 5px 5px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    margin: 0px 2px;
+    cursor: pointer;
+    border: 1px solid green;
+    float: left;
+    width: 80px;
+    height: 30px;
+}
+
+#activateButton {
+    background-color: #4CAF50;
+    border: none;
+    color: white;
+    padding: 5px 5px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    margin: 2px 2px;
+    cursor: pointer;
+    border: 1px solid green;
+    float: left;
+    width: 60px;
+    height: 30px;
+}
+
+#homeButton {
+    background-color: #4CAF50;
+    border: none;
+    color: white;
+    padding: 5px 5px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    margin: 2px 2px;
+    margin-bottom: 10px;
+    cursor: pointer;
+    border: 1px solid green;
+    float: left;
+    width: 80px;
+    height: 30px;
+}
+
+#nextButton {
+    background-color: #4CAF50;
+    border: none;
+    color: white;
+    padding: 5px 5px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    margin: 2px 2px;
+    cursor: pointer;
+    border: 1px solid green;
+    float: left;
+    width: 76px;
+    height: 30px;
+}
+
+#coords {
+    width: 140px;
+    height: 30px;
+    padding: 5px 5px;
+    margin: 0px 2px;
+    box-sizing: border-box;
+    border: 2px solid green;
+    float: left;
+}
+
+#left_button {
+    clear: both;
+    float: left;
+    height: 100px;
+    width: 22px;
+    background-color: #4CAF50;
+    color: white;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 10px;
+    cursor: pointer;
+    border: 1px solid green;
+}
