@@ -2,23 +2,10 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="31471fed-0276-4548-9ec2-debeeff51e56" name="Default" comment="">
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/jsLibraryMappings.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/extension/popup.css" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/.idea/RPGImprove.iml" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/.idea/vcs.xml" afterPath="" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/RPGB.iml" afterPath="$PROJECT_DIR$/.idea/RPGB.iml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/modules.xml" afterPath="$PROJECT_DIR$/.idea/modules.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/vcs.xml" afterPath="$PROJECT_DIR$/.idea/vcs.xml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/content_injector.js" afterPath="$PROJECT_DIR$/extension/content_injector.js" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/icon.png" afterPath="$PROJECT_DIR$/extension/icon.png" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/injection.js" afterPath="$PROJECT_DIR$/extension/bot/injection.js" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/injection_bot.js" afterPath="$PROJECT_DIR$/extension/bot/injection_bot.js" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/jquery.js" afterPath="$PROJECT_DIR$/extension/auxiliary/jquery.js" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/manifest.json" afterPath="$PROJECT_DIR$/extension/manifest.json" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/mod.js" afterPath="$PROJECT_DIR$/extension/bot/mod.js" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/network_injector.js" afterPath="$PROJECT_DIR$/extension/network_injector.js" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/pathfinding-browser.min.js" afterPath="$PROJECT_DIR$/extension/auxiliary/pathfinding-browser.min.js" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/popup.html" afterPath="$PROJECT_DIR$/extension/popup.html" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/popup.js" afterPath="$PROJECT_DIR$/extension/popup.js" />
     </list>
     <ignored path="$PROJECT_DIR$/.tmp/" />
     <ignored path="$PROJECT_DIR$/temp/" />
@@ -365,12 +352,12 @@
       <workItem from="1494188853404" duration="87000" />
       <workItem from="1494188978889" duration="1750000" />
       <workItem from="1494190908290" duration="513000" />
-      <workItem from="1494225923462" duration="22741000" />
+      <workItem from="1494225923462" duration="23116000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="25091000" />
+    <option name="totallyTimeSpent" value="25466000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="-9" y="-9" width="1298" height="768" extended-state="6" />
