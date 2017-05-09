@@ -270,6 +270,7 @@
                 localStorage.areas = areas;
 
             areas[input.name] = {lx: lx, ly: ly, rx: rx, ry: ry, exept: input.exept, name: input.name};
+            selectedArea = { area: areas[selectedArea.area.name], index: selectedArea.index};
 
             console.log(localStorage.areas);
             console.log(areas);
@@ -302,17 +303,38 @@
             }
 	    });
 
+
+        $("#remove_button").click(function () {
+            if (!isEditArea && selectedArea !== undefined) {
+            	var index = selectedArea.index;
+            	delete areas[selectedArea.area.name];
+            	localStorage.areas = JSON.stringify(areas);
+
+            	console.log(areas);
+            	var values = Object.values(areas);
+            	if (values.length > 0) {
+            		selectedArea = { area: values[0], index: 0};
+                    $("#coords").val("{\"name\": \"" + selectedArea.area.name + "\" , \"exept\":" + JSON.stringify(selectedArea.area.exept) + "}");
+				} else {
+            		selectedArea = undefined;
+				}
+			}
+        });
+
         $("#nextButton").click(function () {
             if (isNeedEdit) {
                 isEditCoordinates = false;
                 isEditArea = true;
                 isNeedEdit = false;
 
-                if (selectedArea != undefined) {
+                if (selectedArea !== undefined) {
                 	lx = selectedArea.area.lx;
                     ly = selectedArea.area.ly;
                     rx = selectedArea.area.rx;
                     ry = selectedArea.area.ry;
+                    $("#coords").val("{\"name\": \"" + selectedArea.area.name + "\", \"exept\":" + JSON.stringify(selectedArea.area.exept) + "}");
+				} else {
+                	$("#coords").val("{\"name\": \"some\", \"exept\":[]}");
 				}
 
                 isNeedEditApplyStyle();
@@ -334,6 +356,7 @@
             			selectedArea = {area: values[0], index: 0};
 					}
 				}
+                $("#coords").val("{\"name\": \"" + selectedArea.area.name + "\" , \"exept\":" + JSON.stringify(selectedArea.area.exept) + "}");
 			}
         });
 
