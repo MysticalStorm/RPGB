@@ -1,10 +1,11 @@
 body {
-    background-color: darkslategrey;
+    /*background-color: darkslategrey;*/
+    background-color: black;
     width: 230px;
 }
 
 #myCanvas {
-    border: 1px solid #000000;
+    border: 1px solid #ffffff;
     display: block;
     margin: 0 auto;
 }
@@ -43,7 +44,7 @@ body {
     height: 30px;
 }
 
-#homeButton {
+#toCoordButton {
     background-color: #4CAF50;
     border: none;
     color: white;
@@ -88,7 +89,21 @@ body {
     float: left;
 }
 
-#left_button {
+#save_button {
+    clear: both;
+    float: left;
+    height: 100px;
+    width: 22px;
+    background-color: #4CAF50;
+    color: white;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 10px;
+    cursor: pointer;
+    border: 1px solid green;
+}
+
+#remove_button {
     clear: both;
     float: left;
     height: 100px;

@@ -1,6 +1,8 @@
     var isBotActive = false;
-	var currentFarmArea;
+	var currentFarm;
+	var movePoint = {x: 20, y: 20};
 	var movementSpeed = 225;
+	var _playersInArea = [];
 
     function pathTo(x, y) {
 		var finder = new PF.BestFirstFinder({
@@ -74,6 +76,19 @@
     function atackPosition(x, y) {
     	var paths = [];
 
+    	if (_playersInArea.length > 0) {
+    		var emenyBusy = false;
+    		_playersInArea.forEach(function (player, i, array) {
+				if ( ((player.x == x - 1) && (player.y == y) ) ||
+                     ((player.x == x + 1) && (player.y == y) ) ||
+                     ((player.x == x) && (player.y == y + 1) ) ||
+                     ((player.x == x) && (player.y == y - 1) ) ) {
+					emenyBusy = true;
+				}
+			});
+    		if (emenyBusy) return [];
+		}
+
     	if (!obj_g(on_map[players[0].map][x - 1][y])) {
     		paths.push(pathTo(x - 1, y));
     	}
@@ -97,7 +112,7 @@
 
     function getPlayersCoords() {
         var players_coords = Object.values( players ).map(function(elem, index) {
-            return {x: elem.i, y: elem.j, name: elem.name};
+            return {x: elem.i, y: elem.j, name: elem.name, me: elem.me};
         });
         var players_coords = players_coords.filter(function (elem) {
             return !(/pet/.test(elem.name))
@@ -118,6 +133,7 @@
 		players_coords.forEach(function (player, i, array) {
 			if ( (player.x >= area.lx && player.x <= area.rx) &&
 				(player.y >= area.ly && player.y <= area.ry) ) {
+				if (!player.me)
 				_players.push(player);
 			}
 		});
@@ -125,31 +141,36 @@
     }
 
     function activateBot() {
-    	if (isBotActive) {
+    	if (isBotActive || currentFarm === undefined) {
     		isBotActive = false;
     		return;
 		}
     	isBotActive = true;
+        //var castleArea = {lx: 40, ly: 54, rx: 52, ry: 65, exept: [{x: 43, y: 58}, {x: 50, y: 63}]};
+        //currentFarmArea = castleArea;
 
-        var castleArea = {lx: 40, ly: 54, rx: 52, ry: 65, exept: [{x: 43, y: 58}, {x: 50, y: 63}]};
-        currentFarmArea = castleArea;
-
-    	farmArea(currentFarmArea);
+    	farmArea(currentFarm.area);
     }
 
     function stopBot() {
     	isBotActive = false;
-    	currentFarmArea = undefined;
+    	currentFarm = undefined;
     }
 
-    function toHome() {
-    	var path=pathTo(20, 20);
+    function toPoint(point) {
+        var path;
+    	if (point != undefined) path=pathTo(point.x, point.y);
+    	else path=pathTo(movePoint.x, movePoint.y);
+    	nodes(path);
     	movementSpeed = 225;
     	_moveInPath(path, function (s) {})
     }
 
     function farmArea(area) {
-    	if (area === undefined) return;
+    	if (area === undefined) {
+    		isBotActive = false;
+            return;
+        }
 
     	var mobs = scanArea(area.lx, area.ly , area.rx, area.ry, area.exept);
     	var positionsToAtack = ableToAtackEnemiesPaths(mobs);
@@ -160,30 +181,31 @@
     function farmMobs(positionsToAtack) {
     	if (positionsToAtack.length == 0) {
     		console.log("Farm is empty");
-    		setTimeout(farmArea, 1000, currentFarmArea);
+    		setTimeout(farmArea, 1000, currentFarm.area);
     		return
     	}
     	if (!isBotActive) return;
+    		var atackPosition = positionsToAtack.shift();
+    		_playersInArea = playersInArea(currentFarm.area);
+			movementSpeed = _playersInArea.length > 0 ? 500 : 225;
 
-    	var atackPosition = positionsToAtack.shift();
     	if (atackPosition.path.length > 0) {
     		nodes(atackPosition.path);
 
     		var p = atackPosition.path[0];
-    		movementSpeed = playersInArea(currentFarmArea).length > 1 ? 500 : 225;
     		_moveInPath(atackPosition.path, function (finished) {
     			if (p != undefined)
     			console.log("move to (" + p.x + " " + p.y + ") - " + finished);
 
     			if (finished) {
     				if (!on_map[players[0].map][atackPosition.enemy.x][atackPosition.enemy.y]) {
-						farmArea(currentFarmArea);
+						farmArea(currentFarm.area);
 						return
 					}
 
 					atackMob(atackPosition.enemy.x, atackPosition.enemy.y, function (success) {
 						console.log("atack (" + atackPosition.enemy.x + " " + atackPosition.enemy.y + ") - " + success);
-                        farmArea(currentFarmArea);
+                        farmArea(currentFarm.area);
 					});
     			}
     		})
@@ -219,7 +241,7 @@
 				path: path,
 				enemies: enemies,
 				players: players_coords,
-				area: currentFarmArea,
+				farm: currentFarm,
 				active: isBotActive});
 		document.dispatchEvent(evt);
     }

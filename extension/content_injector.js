@@ -35,9 +35,18 @@ chrome.runtime.onMessage.addListener(
 		location.href="javascript:activateBot(); void 0";
 	} else if (request.id == "stop") {
 		location.href="javascript:stopBot(); void 0";
-	} else if (request.id == "home") {
-		location.href="javascript:toHome(); void 0";
-	}
+	} else if (request.id == "toPoint") {
+  	    if (request.point != undefined)
+			location.href="javascript:toPoint({x: " + request.point.lx + ", y: " + request.point.ly +"});";
+        else
+        	location.href="javascript:toPoint();";
+	} else if (request.id == "newPoint") {
+        location.href="javascript:movePoint={x: " + request.point.lx + ", y: " + request.point.ly +"};";
+	} else if (request.id == "newArea") {
+  		var area = JSON.stringify(request.area);
+  		console.log(area);
+        location.href="javascript:currentFarm="+area+";";
+    }
 });
 
 document.addEventListener('yourCustomEvent', function (e) {
